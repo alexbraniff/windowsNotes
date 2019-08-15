@@ -1,0 +1,136 @@
+﻿<UserControl x:Class="Notes.UI.Controls.Views.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Notes.UI.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:fragments="clr-namespace:Notes.UI.Controls.Fragments"
+             xmlns:views="clr-namespace:Notes.UI.Controls.Views"
+             mc:Ignorable="d">
+    <StackPanel
+        x:Name="MainPanel">
+        <Grid
+            x:Name="Grid_NoUser">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="1" Margin="24 0 0 0" VerticalAlignment="Center">
+                    <TextBlock
+                        Style="{StaticResource MaterialDesignDisplay1TextBlock}"
+                        MaxWidth="600"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap">Welcome to the note taking application you didn't know you needed</TextBlock>
+                    <Button
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
+                        CommandParameter="{x:Static Dock.Left}">
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Kind="Binoculars" />
+                            <TextBlock
+                                Margin="8 0 0 0">EXPLORE</TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <TextBlock
+                        Grid.Row="0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource MaterialDesignHeadlineTextBlock}"
+                        Margin="0"
+                        TextWrapping="Wrap"
+                        TextAlignment="Center"
+                        MaxWidth="800">Feel free to take a look around, but you'll probably want to register or login to really get to know it...</TextBlock>
+                </StackPanel>
+            </Grid>
+            <ScrollViewer
+                Grid.Row="1"
+                HorizontalScrollBarVisibility="Auto"
+                VerticalScrollBarVisibility="Disabled"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Margin="0 0 0 32">
+                <Grid>
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <materialDesign:Card
+                            x:Name="Card_Login"
+                            Width="420"
+                            Margin="8 2 4 16"
+                            Height="270">
+                            <Grid
+                                VerticalAlignment="Stretch">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition
+                                        Height="75" />
+                                    <RowDefinition
+                                        Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                    Grid.Row="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource MaterialDesignHeadlineTextBlock}"
+                                    Margin="0">Login</TextBlock>
+                                <Border
+                                    Grid.Row="1"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    BorderThickness="0 1 0 0"
+                                    BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                    Padding="8">
+                                    <fragments:LoginFragment x:Name="Login"></fragments:LoginFragment>
+                                </Border>
+                            </Grid>
+                        </materialDesign:Card>
+                        <materialDesign:Card
+                            Width="420"
+                            Margin="4 2 8 16"
+                            Height="270">
+                            <Grid
+                                VerticalAlignment="Stretch">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition
+                                        Height="75" />
+                                    <RowDefinition
+                                        Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                    Grid.Row="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource MaterialDesignHeadlineTextBlock}"
+                                    Margin="0">Register</TextBlock>
+                                <Border
+                                    Grid.Row="1"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    BorderThickness="0 1 0 0"
+                                    BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                    Padding="8">
+                                    <fragments:RegisterFragment x:Name="Register"></fragments:RegisterFragment>
+                                </Border>
+                            </Grid>
+                        </materialDesign:Card>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+        <Grid
+            x:Name="Grid_WithUser"
+            Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="{Binding ElementName=MainPanel, Path=ActualHeight}"/>
+            </Grid.RowDefinitions>
+            <views:DashboardView x:Name="Dashboard"></views:DashboardView>
+        </Grid>
+    </StackPanel>
+</UserControl>

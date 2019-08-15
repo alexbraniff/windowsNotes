@@ -1,0 +1,122 @@
+﻿<Window x:Class="Notes.UI.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:local="clr-namespace:Notes.UI"
+                      xmlns:controls="clr-namespace:Notes.UI.Controls"
+        xmlns:menuLinks="clr-namespace:Notes.UI.Controls.MenuLinks"
+        xmlns:models="clr-namespace:Notes.UI.Domain.Models"
+        xmlns:fragments="clr-namespace:Notes.UI.Controls.Fragments"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        mc:Ignorable="d"
+        Title="Notes"
+        Closing="Window_Closing"
+        MinWidth="925"
+        MinHeight="775"
+        Width="925"
+        Height="775">
+        <!--WindowState="Maximized"-->
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+    <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+            <materialDesign:DrawerHost.LeftDrawerContent>
+                <DockPanel MinWidth="212">
+                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                                    DockPanel.Dock="Top"
+                                    HorizontalAlignment="Right" Margin="16"
+                                    IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
+                    <ListBox x:Name="ListBox_MainMenuItems" Margin="0 16 0 16" SelectedIndex="0"                         
+                             ItemsSource="{Binding MainMenuItems}"
+                             PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="models:MainMenuItemModel">
+                                <TextBlock Text="{Binding Name}" Margin="32 0 32 0" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </materialDesign:DrawerHost.LeftDrawerContent>
+            <DockPanel>
+                <materialDesign:ColorZone
+                    Padding="16"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                    Mode="PrimaryMid"
+                    DockPanel.Dock="Top">
+                    <DockPanel>
+                        <ToggleButton
+                            Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                            IsChecked="False"
+                            x:Name="MenuToggleButton"/>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                            <fragments:AccountMenuFragment
+                                x:Name="AccountMenu"></fragments:AccountMenuFragment>
+                            <materialDesign:PopupBox
+                                x:Name="Popup_ActionMenu"
+                                Margin="0,0,0,0"
+                                StaysOpen="True"
+                                IsEnabled="True">
+                                <Grid
+                                    Margin="8,0,8,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition
+                                            Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition
+                                            Height="*" />
+                                        <RowDefinition
+                                            Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <!--<Button Grid.Row="0" Content="Hello World" Click="MenuPopupButton_OnClick"/>-->
+                                    <Button
+                                        Grid.Row="0"
+                                        Content="Quit"
+                                        Click="Button_Click_2"/>
+                                </Grid>
+                            </materialDesign:PopupBox>
+                        </StackPanel>
+                    </DockPanel>
+                </materialDesign:ColorZone>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition
+                            Height="*" />
+                    </Grid.RowDefinitions>
+                    <menuLinks:MainMenuLinks
+                        x:Name="ViewLinks"
+                        Visibility="{Binding ElementName=ListBox_MainMenuItems, Path=Items.IsEmpty, Converter={StaticResource BoolToVis}}"
+                        DataContext="{Binding ElementName=ListBox_MainMenuItems, Path=SelectedItem}"
+                        Margin="0 0 0 16" />
+                    <ScrollViewer
+                        Grid.Row="1" 
+                        HorizontalScrollBarVisibility="{Binding ElementName=ListBox_MainMenuItems, Path=SelectedItem.HorizontalScrollBarVisibilityRequirement}"
+                        VerticalScrollBarVisibility="{Binding ElementName=ListBox_MainMenuItems, Path=SelectedItem.VerticalScrollBarVisibilityRequirement}" 
+                        Padding="{Binding ElementName=ListBox_MainMenuItems, Path=SelectedItem.MarginRequirement}">
+                        <ContentControl
+                            Content="{Binding ElementName=ListBox_MainMenuItems, Path=SelectedItem.Content}" />
+                    </ScrollViewer>
+
+                    <materialDesign:Snackbar
+                        MessageQueue="{materialDesign:MessageQueue}"
+                        x:Name="MainSnackbar"
+                        Grid.Row="1" />
+                </Grid>
+            </DockPanel>
+        </materialDesign:DrawerHost>
+    </materialDesign:DialogHost>
+</Window>

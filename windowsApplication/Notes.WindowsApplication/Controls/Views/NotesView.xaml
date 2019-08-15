@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="Notes.UI.Controls.Views.NotesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Notes.UI.Controls.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:fragments="clr-namespace:Notes.UI.Controls.Fragments"
+             mc:Ignorable="d" 
+    d:DesignHeight="300" d:DesignWidth="300">
+    <Grid
+        x:Name="Grid_Notes">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto"/>
+            <RowDefinition
+                Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel
+            Grid.Row="0"
+            Orientation="Horizontal">
+            <TextBlock
+                x:Name="TextBlock_NotesTitle" Text="My Notes" />
+            <Button
+                Click="Button_AddNote_Click">Add Note</Button>
+        </StackPanel>
+        <ListBox
+            x:Name="List_Notes"
+            Grid.Row="1"
+            Width="500"
+            Height="{Binding ElementName=Grid_Notes, Path=ActualHeight}"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <fragments:NoteFragment
+                        Width="{Binding ElementName=List_Notes, Path=ActualWidth}"></fragments:NoteFragment>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.Template>
+                <ControlTemplate
+                    TargetType="ListBox">
+                    <ScrollViewer>
+                        <ItemsPresenter/>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ListBox.Template>
+        </ListBox>
+    </Grid>
+</UserControl>
